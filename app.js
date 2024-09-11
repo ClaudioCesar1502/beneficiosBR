@@ -1,32 +1,34 @@
-function pesquisar() {
-  // Seleciona a seção onde os resultados da pesquisa serão exibidos
-  let section = document.getElementById("resultados-pesquisa");
+// Adiciona um event listener para o campo de pesquisa que escuta o pressionamento de tecla
+document.getElementById("campo-pesquisa").addEventListener("keydown", function(event) {
+    // Verifica se a tecla pressionada foi o Enter (código 13)
+    if (event.key === "Enter") {
+        event.preventDefault(); // Evita o comportamento padrão (submeter formulário, por exemplo)
+        pesquisar(); // Chama a função de pesquisa
+    }
+});
 
+function pesquisar() {
+  let section = document.getElementById("resultados-pesquisa");
   let campoPesquisa = document.getElementById("campo-pesquisa").value;
 
-  // se campoPesquisa for uma string sem nada:
   if (!campoPesquisa) {
-     section.innerHTML = "<p>Nada foi encontrado. Inserir um nome valido</p>";
-     return;
+    section.innerHTML = "<p>Nada foi encontrado. Inserir um nome válido</p>";
+    return;
   }
 
   campoPesquisa = campoPesquisa.toLowerCase();
 
-  // Inicializa uma string vazia para armazenar o HTML dos resultados
   let resultados = "";
   let titulo = "";
   let descricao = "";
   let tags = "";
 
-  // Itera sobre os dados da pesquisa e constrói o HTML para cada resultado
   for (let dado of dados) {
       titulo = dado.titulo.toLowerCase();
       descricao = dado.descricao.toLowerCase();
       tags = dado.tags.toLowerCase();
 
-      // Se título, descrição ou tags incluem campoPesquisa
       if (titulo.includes(campoPesquisa) || descricao.includes(campoPesquisa) || tags.includes(campoPesquisa)) {
-          // Cria um novo elemento com o mesmo link no título e "Mais informações"
           resultados += `
           <div class="item-resultado">
             <h2>
@@ -39,11 +41,9 @@ function pesquisar() {
       }
   }
 
-  // Se nenhum resultado foi encontrado
   if (!resultados) {
       resultados = "<p>Nada foi encontrado</p>";
   }
 
-  // Atualiza o conteúdo da seção com os resultados da pesquisa
   section.innerHTML = resultados;
 }
